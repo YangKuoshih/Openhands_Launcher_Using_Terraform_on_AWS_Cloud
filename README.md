@@ -29,7 +29,18 @@ This will automatically:
 ```bash
 launcher.bat
 ```
-Use this for all daily operations (start/stop instance, open OpenHands, SSH access).
+Use this for all daily operations:
+
+**Launcher Options:**
+1. **oh** - Open OpenHands in browser
+2. **ec2** - SSH to EC2 instance  
+3. **status** - Refresh status (restart launcher)
+4. **ec2start** - Manually start EC2 instance
+5. **ec2stop** - Manually stop EC2 instance
+6. **tfp** - Plan infrastructure changes
+7. **tfa** - Update infrastructure
+8. **tfd** - Destroy infrastructure
+9. **Exit** - Close launcher
 
 ## Configure OpenHands LLM
 
@@ -60,8 +71,9 @@ When you first open OpenHands, configure the AI model:
 
 ## Cleanup
 ```bash
-terraform destroy
+launcher.bat
 ```
+Select option 8 (tfd) to destroy all infrastructure
 
 ## Cost Optimization
 - **Auto-scheduling**: Runs 8 AM - 10 PM EST (saves ~58% costs)
