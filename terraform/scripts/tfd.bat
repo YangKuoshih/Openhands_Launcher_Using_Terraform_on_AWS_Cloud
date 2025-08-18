@@ -30,5 +30,3 @@ if %ERRORLEVEL% EQU 0 (
     echo.
     echo Destruction failed. Check the error messages above.
 )
-
-pause

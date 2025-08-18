@@ -30,6 +30,9 @@ services:
       - LLM_MODEL=litellm_proxy/Claude4
       - LLM_BASE_URL=http://litellm
       - LLM_API_KEY=openhands-key-2024
+      - OPENHANDS_LLM_MODEL=litellm_proxy/Claude4
+      - OPENHANDS_LLM_BASE_URL=http://litellm
+      - OPENHANDS_LLM_API_KEY=openhands-key-2024
     volumes:
       - ./.openhands:/.openhands
       - /var/run/docker.sock:/var/run/docker.sock

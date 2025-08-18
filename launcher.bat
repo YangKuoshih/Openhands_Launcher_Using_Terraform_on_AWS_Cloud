@@ -4,7 +4,7 @@ echo OpenHands Launcher
 echo ===============================================
 echo.
 
-cd /d "%~dp0\.."
+cd /d "%~dp0terraform"
 
 echo Loading infrastructure info...
 REM Get infrastructure status
@@ -15,7 +15,7 @@ for /f "tokens=*" %%i in ('terraform output -raw openhands_url 2^>nul') do set O
 
 if "%INSTANCE_ID%"=="" (
     echo Status: Infrastructure not deployed
-    echo Run setup.bat first to deploy OpenHands infrastructure
+    echo Run START-HERE.bat first to deploy OpenHands infrastructure
     echo.
     echo Press any key to exit...
     pause >nul
@@ -35,17 +35,24 @@ if "%STATE%"=="running" (
     echo OpenHands URL: %OPENHANDS_URL%
     echo.
     echo OpenHands should be starting up (allow 2-3 minutes)
-) else if "%STATE%"=="stopped" (
-    echo Status: STOPPED
-    echo OpenHands URL: Not available (instance stopped)
-) else if "%STATE%"=="pending" (
-    echo Status: STARTING...
-    echo OpenHands URL: Will be available at %OPENHANDS_URL%
-) else if "%STATE%"=="stopping" (
-    echo Status: STOPPING...
-    echo OpenHands URL: Not available
 ) else (
-    echo Status: %STATE%
+    if "%STATE%"=="stopped" (
+        echo Status: STOPPED
+        echo OpenHands URL: Not available (instance stopped)
+    ) else (
+        if "%STATE%"=="pending" (
+            echo Status: STARTING...
+            echo OpenHands URL: Will be available at %OPENHANDS_URL%
+        ) else (
+            if "%STATE%"=="stopping" (
+                echo Status: STOPPING...
+                echo OpenHands URL: Not available
+            ) else (
+                echo Status: %STATE%
+                echo OpenHands URL: %OPENHANDS_URL%
+            )
+        )
+    )
 )
 
 echo.
@@ -68,14 +75,14 @@ echo 9. Exit
 echo.
 set /p choice="Enter your choice (1-9): "
 
-if "%choice%"=="1" call "%~dp0oh.bat" && goto menu
-if "%choice%"=="2" call "%~dp0ec2.bat" && goto menu
+if "%choice%"=="1" call "%~dp0terraform\scripts\oh.bat" && goto menu
+if "%choice%"=="2" call "%~dp0terraform\scripts\ec2.bat" && goto menu
 if "%choice%"=="3" cls && "%~dp0launcher.bat" && exit /b
-if "%choice%"=="4" call "%~dp0ec2start.bat" && goto menu
-if "%choice%"=="5" call "%~dp0ec2stop.bat" && goto menu
-if "%choice%"=="6" call "%~dp0tfp.bat" && goto menu
-if "%choice%"=="7" call "%~dp0tfa.bat" && goto menu
-if "%choice%"=="8" call "%~dp0tfd.bat" && goto menu
+if "%choice%"=="4" call "%~dp0terraform\scripts\ec2start.bat" && goto menu
+if "%choice%"=="5" call "%~dp0terraform\scripts\ec2stop.bat" && goto menu
+if "%choice%"=="6" call "%~dp0terraform\scripts\tfp.bat" && goto menu
+if "%choice%"=="7" call "%~dp0terraform\scripts\tfa.bat" && goto menu
+if "%choice%"=="8" call "%~dp0terraform\scripts\tfd.bat" && goto menu
 if "%choice%"=="9" exit /b
 
 echo Invalid choice. Please enter 1-9.

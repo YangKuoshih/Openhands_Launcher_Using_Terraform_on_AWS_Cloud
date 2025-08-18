@@ -18,10 +18,7 @@ if %ERRORLEVEL% EQU 0 (
     echo ===============================================
     echo Deployment completed successfully!
     echo ===============================================
-    call "%~dp0\status.bat"
 ) else (
     echo.
     echo Deployment failed. Check the error messages above.
 )
-
-pause
