@@ -1,0 +1,27 @@
+# SSH Keys
+*.pem
+*.pub
+keys/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+terraform.tfvars
+terraform.tfvars.json
+
+# AWS Credentials
+.aws/
+credentials
+
+# Environment Variables
+set-env-vars.bat
+.env
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
