@@ -29,10 +29,10 @@ services:
       - LOG_ALL_EVENTS=true
       - LLM_MODEL=litellm_proxy/Claude4
       - LLM_BASE_URL=http://litellm
-      - LLM_API_KEY=openhands-key-2024
+      - LLM_API_KEY=openhands-key-2025
       - OPENHANDS_LLM_MODEL=litellm_proxy/Claude4
       - OPENHANDS_LLM_BASE_URL=http://litellm
-      - OPENHANDS_LLM_API_KEY=openhands-key-2024
+      - OPENHANDS_LLM_API_KEY=openhands-key-2025
     volumes:
       - ./.openhands:/.openhands
       - /var/run/docker.sock:/var/run/docker.sock
@@ -48,7 +48,7 @@ services:
       - ./litellm-config.yml:/app/config.yaml
     restart: unless-stopped
     environment:
-      - LITELLM_API_KEY=openhands-key-2024
+      - LITELLM_API_KEY=openhands-key-2025
       - AWS_REGION=us-east-1
       - PORT=80
     command: --config /app/config.yaml --detailed_debug
@@ -87,7 +87,7 @@ persist_sandbox = false
 
 [llm]
 model = "litellm_proxy/Claude4"
-api_key = "openhands-key-2024"
+api_key = "openhands-key-2025"
 base_url = "http://litellm"
 temperature = 0.0
 max_iterations = 100

@@ -1,8 +1,8 @@
 {
   "project": {
-    "id": "openhands-tony-2024",
-    "name": "OpenHands Tony 2024",
-    "owner": "tony.yang"
+    "id": "openhands-aws-setup",
+    "name": "OpenHands AWS Setup",
+    "owner": "user"
   },
   "aws": {
     "region": "us-east-1",
@@ -23,6 +23,6 @@
   "openhands": {
     "port": 8150,
     "version": "0.50",
-    "litellm_key": "openhands-key-2024"
+    "litellm_key": "openhands-key-2025"
   }
 }

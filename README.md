@@ -51,7 +51,7 @@ When you first open OpenHands, configure the AI model:
 3. Enter these settings:
    - **Custom Model**: `litellm_proxy/Claude4`
    - **Base URL**: `http://litellm`
-   - **API Key**: `openhands-key-2024`
+   - **API Key**: `openhands-key-2025`
 4. Click "Save Changes"
 5. Complete privacy preferences popup
 
