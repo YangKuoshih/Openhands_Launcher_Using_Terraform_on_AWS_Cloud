@@ -69,6 +69,18 @@ if %ERRORLEVEL% EQU 2 (
 )
 echo Starting Terraform deployment (this may take 3-5 minutes)...
 terraform apply -auto-approve
+if %ERRORLEVEL% NEQ 0 (
+    echo.
+    echo Terraform apply failed - likely due to existing resources.
+    echo Running resource cleanup...
+    echo.
+    cd /d "%~dp0terraform\scripts"
+    call cleanup-existing-resources.bat
+    cd /d "%~dp0terraform"
+    echo.
+    echo Retrying terraform apply...
+    terraform apply -auto-approve
+)
 
 echo.
 echo ================================================================

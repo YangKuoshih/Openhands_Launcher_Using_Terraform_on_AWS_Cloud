@@ -71,9 +71,10 @@ echo 5. ec2stop   - Manually stop EC2 instance
 echo 6. tfp       - Plan infrastructure changes
 echo 7. tfa       - Update infrastructure
 echo 8. tfd       - Destroy infrastructure
-echo 9. Exit
+echo 9. cleanup   - Fix resource conflicts
+echo 10. Exit
 echo.
-set /p choice="Enter your choice (1-9): "
+set /p choice="Enter your choice (1-10): "
 
 if "%choice%"=="1" call "%~dp0terraform\scripts\oh.bat" && goto menu
 if "%choice%"=="2" call "%~dp0terraform\scripts\ec2.bat" && goto menu
@@ -83,7 +84,8 @@ if "%choice%"=="5" call "%~dp0terraform\scripts\ec2stop.bat" && goto menu
 if "%choice%"=="6" call "%~dp0terraform\scripts\tfp.bat" && goto menu
 if "%choice%"=="7" call "%~dp0terraform\scripts\tfa.bat" && goto menu
 if "%choice%"=="8" call "%~dp0terraform\scripts\tfd.bat" && goto menu
-if "%choice%"=="9" cd /d "%~dp0" && exit /b
+if "%choice%"=="9" call "%~dp0terraform\cleanup-resources.bat" && goto menu
+if "%choice%"=="10" cd /d "%~dp0" && exit /b
 
-echo Invalid choice. Please enter 1-9.
+echo Invalid choice. Please enter 1-10.
 goto menu
