@@ -350,48 +350,135 @@ class AWSSSOManager:
         try:
             choice = input("Enter number (1-{0}): ".format(len(profile_names))).strip()
             
+            # Auto-select first profile if no input provided
+            if not choice and profile_names:
+                choice = "1"
+                print(f"Auto-selecting first profile: {profile_names[0]}")
+            
             if choice and choice.isdigit():
                 index = int(choice) - 1
                 if 0 <= index < len(profile_names):
                     selected_profile = profile_names[index]
                     self._set_default_profile(selected_profile)
+                    # Set environment variable for current session
+                    os.environ['AWS_PROFILE'] = selected_profile
+                    # Create batch file to set profile
+                    self._create_profile_setter(selected_profile)
                     print(f"\nDefault profile set to: {selected_profile}")
+                    print(f"Environment variable AWS_PROFILE set for this session")
+                    print(f"\nTo use this profile in your current terminal, run:")
+                    if os.name == 'nt':
+                        print(f"PowerShell: . .\\set-aws-profile.ps1")
+                        print(f"CMD: call set-aws-profile.bat")
+                    else:
+                        print(f"source ./set-aws-profile.sh")
                 else:
                     print("Invalid selection. No default profile set.")
             else:
                 print("No default profile set.")
+                print("\nTo use any profile in new terminal sessions:")
+                for profile_name in profile_names:
+                    if os.name == 'nt':  # Windows
+                        print(f"CMD: set AWS_PROFILE={profile_name}")
+                        print(f"PowerShell: $env:AWS_PROFILE='{profile_name}'")
+                    else:  # Linux/macOS
+                        print(f"export AWS_PROFILE={profile_name}")
         except (KeyboardInterrupt, EOFError):
+            # Auto-select first profile on EOF (non-interactive mode)
+            if profile_names:
+                selected_profile = profile_names[0]
+                self._set_default_profile(selected_profile)
+                os.environ['AWS_PROFILE'] = selected_profile
+                self._create_profile_setter(selected_profile)
+                print(f"\nAuto-selected default profile: {selected_profile}")
+                return
             print("\nNo default profile set.")
-        
-        print("\nManual profile commands:")
-        for profile_name in profile_names:
-            if os.name == 'nt':  # Windows
-                print(f"set AWS_DEFAULT_PROFILE={profile_name}")
-            else:  # Linux/macOS
-                print(f"export AWS_DEFAULT_PROFILE={profile_name}")
+            print("\nTo use any profile in new terminal sessions:")
+            for profile_name in profile_names:
+                if os.name == 'nt':  # Windows
+                    print(f"CMD: set AWS_PROFILE={profile_name}")
+                    print(f"PowerShell: $env:AWS_PROFILE='{profile_name}'")
+                else:  # Linux/macOS
+                    print(f"export AWS_PROFILE={profile_name}")
     
     def _set_default_profile(self, profile_name: str):
-        """Set the default AWS profile in credentials file"""
-        config = ConfigParser()
+        """Set the default AWS profile in both credentials and config files"""
+        # Update credentials file
+        cred_config = ConfigParser()
         credentials_file = self.path_manager.credentials_file
         
         try:
             if credentials_file.exists():
-                config.read(credentials_file)
+                cred_config.read(credentials_file)
             
             # Copy selected profile to [default] section
-            if profile_name in config:
-                config['default'] = dict(config[profile_name])
+            if profile_name in cred_config:
+                cred_config['default'] = dict(cred_config[profile_name])
                 
                 with open(credentials_file, 'w', encoding='utf-8') as f:
-                    config.write(f)
+                    cred_config.write(f)
                 
-                print(f"Updated [default] profile with {profile_name} credentials")
+                print(f"Updated [default] credentials with {profile_name}")
             else:
-                print(f"Profile {profile_name} not found")
+                print(f"Profile {profile_name} not found in credentials")
+        except (IOError, PermissionError) as e:
+            print(f"Failed to set default credentials: {e}")
+            return
+        
+        # Update config file
+        config_parser = ConfigParser()
+        config_file = self.path_manager.config_file
+        
+        try:
+            if config_file.exists():
+                config_parser.read(config_file)
+            
+            # Copy selected profile config to [default] section
+            profile_section = f"profile {profile_name}"
+            if profile_section in config_parser:
+                config_parser['default'] = dict(config_parser[profile_section])
+                
+                with open(config_file, 'w', encoding='utf-8') as f:
+                    config_parser.write(f)
+                
+                print(f"Updated [default] config with {profile_name}")
+            else:
+                # Create default config section with basic settings
+                config_parser['default'] = {
+                    "region": self.aws_config.default_region,
+                    "output": self.aws_config.output_format
+                }
+                
+                with open(config_file, 'w', encoding='utf-8') as f:
+                    config_parser.write(f)
+                
+                print(f"Created [default] config section")
                 
         except (IOError, PermissionError) as e:
-            print(f"Failed to set default profile: {e}")
+            print(f"Failed to set default config: {e}")
+    
+    def _create_profile_setter(self, profile_name: str):
+        """Create script files to set the AWS profile"""
+        try:
+            if os.name == 'nt':  # Windows
+                # Create PowerShell script
+                with open('set-aws-profile.ps1', 'w') as f:
+                    f.write(f'$env:AWS_PROFILE = "{profile_name}"\n')
+                    f.write('Write-Host "AWS Profile set to:" $env:AWS_PROFILE\n')
+                
+                # Create batch script
+                with open('set-aws-profile.bat', 'w') as f:
+                    f.write(f'@echo off\n')
+                    f.write(f'set AWS_PROFILE={profile_name}\n')
+                    f.write(f'echo AWS Profile set to: %AWS_PROFILE%\n')
+            else:  # Linux/macOS
+                with open('set-aws-profile.sh', 'w') as f:
+                    f.write(f'#!/bin/bash\n')
+                    f.write(f'export AWS_PROFILE="{profile_name}"\n')
+                    f.write(f'echo "AWS Profile set to: $AWS_PROFILE"\n')
+                os.chmod('set-aws-profile.sh', 0o755)
+        except (IOError, PermissionError) as e:
+            print(f"Failed to create profile setter script: {e}")
     
     def run(self):
         """Main execution method"""

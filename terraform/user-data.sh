@@ -19,13 +19,13 @@ cd /home/ec2-user/openhands
 cat > docker-compose.yml << 'EOF'
 services:
   openhands-app:
-    image: docker.all-hands.dev/all-hands-ai/openhands:0.50
+    image: docker.all-hands.dev/all-hands-ai/openhands:0.53
     container_name: openhands-app
     pull_policy: always
     stdin_open: true
     tty: true
     environment:
-      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.50-nikolaik
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:0.53-nikolaik
       - LOG_ALL_EVENTS=true
       - LLM_MODEL=litellm_proxy/Claude4
       - LLM_BASE_URL=http://litellm

@@ -47,9 +47,26 @@ if %ERRORLEVEL% NEQ 0 (
 
 echo AWS credentials OK
 echo.
-echo Deploying infrastructure...
+echo Initializing Terraform...
 terraform init
 echo.
+echo Checking for existing infrastructure...
+terraform plan -detailed-exitcode >nul 2>&1
+if %ERRORLEVEL% EQU 2 (
+    echo.
+    echo Existing infrastructure detected.
+    echo Would you like to:
+    echo   1. Update existing infrastructure (recommended)
+    echo   2. Destroy and recreate all
+    echo.
+    set /p choice="Enter choice (1 or 2): "
+    if "%choice%"=="2" (
+        echo.
+        echo Destroying existing infrastructure...
+        terraform destroy -auto-approve
+        echo.
+    )
+)
 echo Starting Terraform deployment (this may take 3-5 minutes)...
 terraform apply -auto-approve
 

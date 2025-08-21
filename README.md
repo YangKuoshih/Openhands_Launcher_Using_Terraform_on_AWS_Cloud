@@ -17,19 +17,20 @@ cd Openhands_Launcher_Using_Terraform_on_AWS_Cloud
 ```
 
 ### 2. First Time Setup
-```bash
+```cmd
 START-HERE.bat
 ```
 This will automatically:
-- Set up AWS SSO authentication (opens browser)
+- Check AWS credentials (set up SSO if needed)
+- Check for existing infrastructure and give you options
 - Deploy OpenHands infrastructure
 - Provide access URL
 
 ### 3. Daily Usage
-```bash
+```cmd
 launcher.bat
 ```
-Use this for all daily operations:
+**Important:** Use `launcher.bat` (not `launch.bat`) for all daily operations:
 
 **Launcher Options:**
 1. **oh** - Open OpenHands in browser
@@ -41,6 +42,15 @@ Use this for all daily operations:
 7. **tfa** - Update infrastructure
 8. **tfd** - Destroy infrastructure
 9. **Exit** - Close launcher
+
+## Docker Image Versions
+
+This deployment uses **OpenHands v0.53** with pinned versions for stability:
+- OpenHands: `docker.all-hands.dev/all-hands-ai/openhands:0.53`
+- Runtime: `docker.all-hands.dev/all-hands-ai/runtime:0.53-nikolaik`
+- LiteLLM: `ghcr.io/berriai/litellm:main-latest`
+
+**To use latest versions:** Edit `terraform/user-data.sh` and change version tags to `latest`
 
 ## Configure OpenHands LLM
 
@@ -70,7 +80,7 @@ When you first open OpenHands, configure the AI model:
 - If no "Cross-region inference" → no prefix needed
 
 ## Cleanup
-```bash
+```cmd
 launcher.bat
 ```
 Select option 8 (tfd) to destroy all infrastructure
