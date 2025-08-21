@@ -84,7 +84,7 @@ if "%choice%"=="5" call "%~dp0terraform\scripts\ec2stop.bat" && goto menu
 if "%choice%"=="6" call "%~dp0terraform\scripts\tfp.bat" && goto menu
 if "%choice%"=="7" call "%~dp0terraform\scripts\tfa.bat" && goto menu
 if "%choice%"=="8" call "%~dp0terraform\scripts\tfd.bat" && goto menu
-if "%choice%"=="9" call "%~dp0terraform\cleanup-resources.bat" && goto menu
+if "%choice%"=="9" call "%~dp0terraform\terraform-state-cleanup.bat" && goto menu
 if "%choice%"=="10" cd /d "%~dp0" && exit /b
 
 echo Invalid choice. Please enter 1-10.
