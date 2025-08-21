@@ -77,4 +77,5 @@ echo ================================================================
 echo.
 echo Daily usage: Run launcher.bat
 echo.
+cd /d "%~dp0"
 pause
