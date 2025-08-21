@@ -41,7 +41,8 @@ launcher.bat
 6. **tfp** - Plan infrastructure changes
 7. **tfa** - Update infrastructure
 8. **tfd** - Destroy infrastructure
-9. **Exit** - Close launcher
+9. **cleanup** - Fix resource conflicts
+10. **Exit** - Close launcher
 
 ## Docker Image Versions
 
@@ -72,12 +73,41 @@ When you first open OpenHands, configure the AI model:
 - `ClaudeOpus4.1` - Claude Opus 4.1
 - `NovaPro1` - Amazon Nova Pro
 
+## Resource Conflicts & Cleanup
+
+**When you see "already exists" errors:**
+```
+openhands-aws-setup-openhands-policy already exists
+openhands-key already exists
+openhands-aws-setup-scheduler-role already exists
+```
+
+**What cleanup does:**
+- Imports existing AWS resources into Terraform state
+- Allows Terraform to manage resources it created previously
+- **Safe operation** - never deletes or modifies existing infrastructure
+- Fixes state mismatches between Terraform and AWS
+
+**When to run cleanup:**
+- After interrupting a previous Terraform deployment
+- When switching between different Terraform state files
+- If you see "resource already exists" errors during `terraform apply`
+- When Terraform "forgets" about resources it previously created
+
+**How to run cleanup:**
+```cmd
+launcher.bat
+```
+Select option 9 (cleanup), then option 7 (tfa) to apply changes.
+
 ## Troubleshooting
 
 **Model Not Working?** Some Bedrock models need `us.` prefix:
 - Check AWS Bedrock Console → Model Access
 - If you see "Cross-region inference" → use `us.` prefix in model config
 - If no "Cross-region inference" → no prefix needed
+
+**Resource Conflicts?** See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed solutions.
 
 ## Cleanup
 ```cmd
