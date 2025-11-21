@@ -20,6 +20,11 @@ echo.
 echo Starting setup...
 cd /d "%~dp0terraform"
 
+REM Setup configuration files
+echo Setting up configuration files...
+call scripts\setup-config.bat
+echo.
+
 REM Check AWS credentials
 echo Checking AWS credentials...
 aws sts get-caller-identity >nul 2>&1

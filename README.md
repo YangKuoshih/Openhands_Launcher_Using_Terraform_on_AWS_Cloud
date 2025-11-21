@@ -8,6 +8,14 @@ Deploy OpenHands AI coding assistant on AWS EC2 with Bedrock integration.
 - **Terraform** installed (verify with `terraform --version`)
 - **AWS Bedrock model access** approved (go to AWS Bedrock Console → Model Access → Request access for required models)
 
+## Configuration
+
+On first run, `START-HERE.bat` will automatically create configuration files from examples:
+- `terraform/config.json` - Infrastructure settings
+- `terraform/scripts/aws_sso_helper/config.ini` - AWS SSO configuration
+
+Edit `config.ini` with your AWS SSO start URL if using SSO authentication.
+
 ## Quick Start
 
 ### 1. Clone Repository
@@ -39,19 +47,19 @@ launcher.bat
 4. **ec2start** - Manually start EC2 instance
 5. **ec2stop** - Manually stop EC2 instance
 6. **tfp** - Plan infrastructure changes
-7. **tfa** - Update infrastructure
+7. **tfa** - Update infrastructure and OpenHands containers
 8. **tfd** - Destroy infrastructure
 9. **cleanup** - Fix resource conflicts
 10. **Exit** - Close launcher
 
 ## Docker Image Versions
 
-This deployment uses **OpenHands v0.53** with pinned versions for stability:
-- OpenHands: `docker.all-hands.dev/all-hands-ai/openhands:0.53`
-- Runtime: `docker.all-hands.dev/all-hands-ai/runtime:0.53-nikolaik`
+This deployment uses **latest versions** of OpenHands for newest features:
+- OpenHands: `docker.all-hands.dev/all-hands-ai/openhands:latest`
+- Runtime: `docker.all-hands.dev/all-hands-ai/runtime:latest`
 - LiteLLM: `ghcr.io/berriai/litellm:main-latest`
 
-**To use latest versions:** Edit `terraform/user-data.sh` and change version tags to `latest`
+**To use pinned versions:** Edit `terraform/user-data.sh` and change version tags to specific versions (e.g., `0.53`)
 
 ## Configure OpenHands LLM
 
