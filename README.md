@@ -66,10 +66,11 @@ This deployment uses **latest versions** for newest features:
 ## Portainer - Docker Management
 
 Portainer provides a web UI to manage Docker containers, images, and volumes:
-- Access via launcher option 3 or navigate to `http://<your-instance-ip>:9000`
-- First-time setup: Create admin password
-- Select "Docker" environment to manage local containers
-- View logs, restart containers, pull new images, and more
+- **Access**: Launcher option 3 or `http://<your-instance-ip>:9000`
+- **First-time setup**: Create admin password
+- **Select Environment**: Choose "Docker" to manage local containers
+- **Features**: View logs, restart containers, pull new images, monitor resources
+- **Useful for**: Troubleshooting OpenHands, checking container status, viewing logs
 
 ## Configure OpenHands LLM
 
@@ -85,11 +86,184 @@ When you first open OpenHands, configure the AI model:
 5. Complete privacy preferences popup
 
 **Available Models:**
-- `Claude3` - Claude 3 Haiku
-- `Claude3.7` - Claude 3.7 Sonnet  
-- `Claude4` - Claude 4 Sonnet
-- `ClaudeOpus4.1` - Claude Opus 4.1
-- `NovaPro1` - Amazon Nova Pro
+- `Claude3` - Claude 3 Haiku (fastest, most cost-effective)
+- `Claude3.7` - Claude 3.7 Sonnet (balanced performance)
+- `Claude4` - Claude 4 Sonnet (recommended - best balance)
+- `ClaudeOpus4.1` - Claude Opus 4.1 (most capable, slower)
+- `NovaPro1` - Amazon Nova Pro (AWS native)
+
+## Getting Started with OpenHands
+
+### What is OpenHands?
+OpenHands is an autonomous AI coding assistant that can write, debug, and modify code directly in your projects. Unlike ChatGPT where you copy/paste code, OpenHands works like an AI developer that can:
+- Read and modify files in your workspace
+- Execute commands and run code
+- Install packages and dependencies
+- Test its own work and iterate
+- Complete multi-step development tasks
+
+### Your First Task
+
+1. **Open OpenHands** (launcher option 1)
+2. **Start with a simple task**:
+   - "Create a Python script that prints Hello World"
+   - "Build a simple HTML page with a contact form"
+   - "Write a function to calculate fibonacci numbers"
+3. **Watch OpenHands work** - it will create files, write code, and test
+4. **Review the results** - check the files it created
+
+### Example Use Cases
+
+**Code Generation:**
+- "Create a REST API with Flask that has CRUD endpoints for a todo list"
+- "Build a React component for a user profile card with avatar and bio"
+- "Write a Python script to parse CSV files and generate reports"
+
+**Debugging & Fixes:**
+- "This function is throwing an error, can you debug it?"
+- "Fix the authentication bug in my login endpoint"
+- "Why is this query slow? Optimize it"
+
+**Refactoring:**
+- "Refactor this code to follow best practices"
+- "Add error handling to all API endpoints"
+- "Convert this JavaScript code to TypeScript"
+
+**Testing:**
+- "Write unit tests for this React component"
+- "Create integration tests for the user registration flow"
+- "Add test coverage for all API endpoints"
+
+**Documentation:**
+- "Generate API documentation for these endpoints"
+- "Add detailed comments explaining this algorithm"
+- "Create a comprehensive README for this project"
+
+### Best Practices
+
+**Be Specific:**
+- ❌ "Make my app better"
+- ✅ "Add input validation to the signup form with email format checking and password strength requirements"
+
+**Provide Context:**
+- Share relevant files or directories
+- Mention frameworks/libraries you're using
+- Explain your project structure
+
+**Start Small:**
+- Begin with simple tasks to understand how OpenHands works
+- Build up to more complex features
+- Review changes before moving to the next task
+
+**Use Version Control:**
+- Commit your code before big changes
+- Review what OpenHands modified
+- Easy to revert if needed
+
+**Iterate:**
+- If results aren't perfect, provide feedback
+- Ask OpenHands to adjust or improve
+- Build on successful completions
+
+### Tips for Success
+
+1. **Clear Instructions**: Be specific about what you want
+2. **One Task at a Time**: Break complex projects into smaller tasks
+3. **Review Changes**: Always check what OpenHands created or modified
+4. **Provide Feedback**: If something isn't right, tell OpenHands to fix it
+5. **Use Portainer**: Monitor container resources and logs (launcher option 3)
+
+### What Makes OpenHands Different
+
+**vs ChatGPT/Claude (Chat-based AI):**
+- OpenHands can execute code and see results
+- Works directly in your codebase
+- Can run tests and verify solutions
+- Autonomous - completes multi-step tasks without constant prompting
+
+**vs GitHub Copilot (Code Completion):**
+- Handles entire features, not just autocomplete
+- Can refactor existing code
+- Understands full project context
+- Can run and debug code independently
+
+**vs Cursor (AI-powered IDE):**
+- OpenHands is IDE-agnostic - works with any editor
+- Fully autonomous agent vs assisted coding
+- Can operate independently without IDE integration
+- Runs in isolated sandbox environment for safety
+- Cloud-based deployment vs local installation
+
+**vs Windsurf/Cline (IDE Extensions):**
+- No IDE lock-in - use your preferred editor
+- Runs on dedicated AWS infrastructure (not local resources)
+- Persistent environment that stays running
+- Team-accessible via web interface
+- Integrated with AWS Bedrock for enterprise AI models
+
+**vs Roo Code/Aider (CLI Tools):**
+- Web-based UI vs command-line interface
+- Visual workspace for easier interaction
+- Persistent sessions across multiple tasks
+- Built-in Docker management with Portainer
+- Scheduled auto-start/stop for cost optimization
+
+**vs Google IDX/Project IDX (Cloud IDE):**
+- Focused on AI agent capabilities vs full IDE
+- Self-hosted on your AWS account (full control)
+- Customizable infrastructure and scaling
+- Direct integration with AWS services
+- No vendor lock-in - you own the deployment
+
+**Key OpenHands Advantages:**
+- **Autonomous Operation**: Completes tasks end-to-end without hand-holding
+- **Sandboxed Execution**: Safe environment to run and test code
+- **Cloud-Based**: Access from anywhere, no local setup needed
+- **AWS Integration**: Native Bedrock support for enterprise AI models
+- **Cost Efficient**: Auto-scheduling saves ~58% on compute costs
+- **Self-Hosted**: Full control over your infrastructure and data
+- **Open Source**: Transparent, customizable, community-driven
+
+### Common Workflows
+
+**New Project:**
+1. "Create a new [framework] project with [features]"
+2. Review structure
+3. "Add [specific feature]"
+4. Test and iterate
+
+**Existing Project:**
+1. Upload or share your code
+2. "Add [feature] to this project"
+3. OpenHands analyzes and implements
+4. Review and test changes
+
+**Debugging:**
+1. Share error message/logs
+2. "Debug this error"
+3. OpenHands investigates and fixes
+4. Verify solution works
+
+### When to Use OpenHands
+
+**Best For:**
+- Building entire features or applications from scratch
+- Refactoring and modernizing existing codebases
+- Debugging complex issues that require testing
+- Learning new frameworks through hands-on examples
+- Automating repetitive development tasks
+- Working on projects that need isolated environments
+
+**Consider Alternatives When:**
+- You need real-time autocomplete while typing (use Copilot)
+- You prefer tight IDE integration (use Cursor/Windsurf)
+- You want quick code snippets without execution (use ChatGPT)
+- You need offline development capabilities (use local tools)
+
+### Need Help?
+- Check OpenHands documentation: https://docs.all-hands.dev
+- Use Portainer to view container logs if issues occur
+- SSH to EC2 (launcher option 2) for advanced troubleshooting
 
 ## Resource Conflicts & Cleanup
 
