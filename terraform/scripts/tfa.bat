@@ -21,20 +21,21 @@ if %ERRORLEVEL% EQU 0 (
     echo.
     echo Updating OpenHands containers to latest version...
     
-    REM Get instance ID
+    REM Get instance info
     for /f "tokens=*" %%i in ('terraform output -raw instance_id 2^>nul') do set INSTANCE_ID=%%i
+    for /f "tokens=*" %%i in ('terraform output -raw instance_public_ip 2^>nul') do set PUBLIC_IP=%%i
     
     if not "%INSTANCE_ID%"=="" (
         REM Check if instance is running
         for /f "tokens=*" %%i in ('aws ec2 describe-instances --instance-ids %INSTANCE_ID% --query "Reservations[0].Instances[0].State.Name" --output text 2^>nul') do set STATE=%%i
         
         if "%STATE%"=="running" (
-            echo Instance is running, updating OpenHands containers...
-            aws ssm send-command --instance-ids %INSTANCE_ID% --document-name "AWS-RunShellScript" --parameters "commands=['cd /home/ec2-user/openhands && docker-compose pull && docker-compose up -d']" --output text >nul 2>&1
+            echo Instance is running, updating docker-compose.yml and containers...
+            ssh -i keys/openhands-key.pem -o StrictHostKeyChecking=no ec2-user@%PUBLIC_IP% "cd /home/ec2-user/openhands && sed -i 's|openhands:0.53|openhands:latest|g' docker-compose.yml && sed -i 's|runtime:0.53-nikolaik|runtime:latest|g' docker-compose.yml && docker-compose pull && docker-compose up -d"
             if %ERRORLEVEL% EQU 0 (
-                echo OpenHands containers updated successfully!
+                echo OpenHands containers updated successfully to latest version!
             ) else (
-                echo Failed to update containers. You can manually update by:
+                echo Failed to update containers via SSH. You can manually update by:
                 echo 1. SSH to EC2 instance
                 echo 2. Run: cd /home/ec2-user/openhands ^&^& docker-compose pull ^&^& docker-compose up -d
             )

@@ -152,6 +152,14 @@ resource "aws_security_group" "openhands" {
   }
 
   ingress {
+    description = "Portainer web access"
+    from_port   = 9000
+    to_port     = 9000
+    protocol    = "tcp"
+    cidr_blocks = local.all_allowed_ips
+  }
+
+  ingress {
     description = "VS Code integration ports"
     from_port   = 30000
     to_port     = 60000

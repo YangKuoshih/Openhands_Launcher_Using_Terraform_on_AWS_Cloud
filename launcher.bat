@@ -65,27 +65,29 @@ echo Select a command:
 echo ===============================================
 echo 1. oh        - Open OpenHands in browser
 echo 2. ec2       - SSH to EC2 instance
-echo 3. status    - Refresh status
-echo 4. ec2start  - Manually start EC2 instance
-echo 5. ec2stop   - Manually stop EC2 instance
-echo 6. tfp       - Plan infrastructure changes
-echo 7. tfa       - Update infrastructure
-echo 8. tfd       - Destroy infrastructure
-echo 9. cleanup   - Fix resource conflicts
-echo 10. Exit
+echo 3. portainer - Open Portainer in browser
+echo 4. status    - Refresh status
+echo 5. ec2start  - Manually start EC2 instance
+echo 6. ec2stop   - Manually stop EC2 instance
+echo 7. tfp       - Plan infrastructure changes
+echo 8. tfa       - Update infrastructure
+echo 9. tfd       - Destroy infrastructure
+echo 10. cleanup  - Fix resource conflicts
+echo 11. Exit
 echo.
-set /p choice="Enter your choice (1-10): "
+set /p choice="Enter your choice (1-11): "
 
 if "%choice%"=="1" call "%~dp0terraform\scripts\oh.bat" && goto menu
 if "%choice%"=="2" call "%~dp0terraform\scripts\ec2.bat" && goto menu
-if "%choice%"=="3" cls && "%~dp0launcher.bat" && exit /b
-if "%choice%"=="4" call "%~dp0terraform\scripts\ec2start.bat" && goto menu
-if "%choice%"=="5" call "%~dp0terraform\scripts\ec2stop.bat" && goto menu
-if "%choice%"=="6" call "%~dp0terraform\scripts\tfp.bat" && goto menu
-if "%choice%"=="7" call "%~dp0terraform\scripts\tfa.bat" && goto menu
-if "%choice%"=="8" call "%~dp0terraform\scripts\tfd.bat" && goto menu
-if "%choice%"=="9" call "%~dp0terraform\terraform-state-cleanup.bat" && goto menu
-if "%choice%"=="10" cd /d "%~dp0" && exit /b
+if "%choice%"=="3" call "%~dp0terraform\scripts\portainer.bat" && goto menu
+if "%choice%"=="4" cls && "%~dp0launcher.bat" && exit /b
+if "%choice%"=="5" call "%~dp0terraform\scripts\ec2start.bat" && goto menu
+if "%choice%"=="6" call "%~dp0terraform\scripts\ec2stop.bat" && goto menu
+if "%choice%"=="7" call "%~dp0terraform\scripts\tfp.bat" && goto menu
+if "%choice%"=="8" call "%~dp0terraform\scripts\tfa.bat" && goto menu
+if "%choice%"=="9" call "%~dp0terraform\scripts\tfd.bat" && goto menu
+if "%choice%"=="10" call "%~dp0terraform\terraform-state-cleanup.bat" && goto menu
+if "%choice%"=="11" cd /d "%~dp0" && exit /b
 
-echo Invalid choice. Please enter 1-10.
+echo Invalid choice. Please enter 1-11.
 goto menu

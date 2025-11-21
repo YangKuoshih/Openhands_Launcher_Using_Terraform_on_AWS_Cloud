@@ -42,24 +42,34 @@ launcher.bat
 
 **Launcher Options:**
 1. **oh** - Open OpenHands in browser
-2. **ec2** - SSH to EC2 instance  
-3. **status** - Refresh status (restart launcher)
-4. **ec2start** - Manually start EC2 instance
-5. **ec2stop** - Manually stop EC2 instance
-6. **tfp** - Plan infrastructure changes
-7. **tfa** - Update infrastructure and OpenHands containers
-8. **tfd** - Destroy infrastructure
-9. **cleanup** - Fix resource conflicts
-10. **Exit** - Close launcher
+2. **ec2** - SSH to EC2 instance
+3. **portainer** - Open Portainer in browser
+4. **status** - Refresh status (restart launcher)
+5. **ec2start** - Manually start EC2 instance
+6. **ec2stop** - Manually stop EC2 instance
+7. **tfp** - Plan infrastructure changes
+8. **tfa** - Update infrastructure and OpenHands containers
+9. **tfd** - Destroy infrastructure
+10. **cleanup** - Fix resource conflicts
+11. **Exit** - Close launcher
 
 ## Docker Image Versions
 
-This deployment uses **latest versions** of OpenHands for newest features:
+This deployment uses **latest versions** for newest features:
 - OpenHands: `docker.all-hands.dev/all-hands-ai/openhands:latest`
 - Runtime: `docker.all-hands.dev/all-hands-ai/runtime:latest`
 - LiteLLM: `ghcr.io/berriai/litellm:main-latest`
+- Portainer: `portainer/portainer-ce:latest`
 
 **To use pinned versions:** Edit `terraform/user-data.sh` and change version tags to specific versions (e.g., `0.53`)
+
+## Portainer - Docker Management
+
+Portainer provides a web UI to manage Docker containers, images, and volumes:
+- Access via launcher option 3 or navigate to `http://<your-instance-ip>:9000`
+- First-time setup: Create admin password
+- Select "Docker" environment to manage local containers
+- View logs, restart containers, pull new images, and more
 
 ## Configure OpenHands LLM
 
@@ -106,7 +116,7 @@ openhands-aws-setup-scheduler-role already exists
 ```cmd
 launcher.bat
 ```
-Select option 9 (cleanup), then option 7 (tfa) to apply changes.
+Select option 10 (cleanup), then option 8 (tfa) to apply changes.
 
 ## Troubleshooting
 
@@ -121,7 +131,7 @@ Select option 9 (cleanup), then option 7 (tfa) to apply changes.
 ```cmd
 launcher.bat
 ```
-Select option 8 (tfd) to destroy all infrastructure
+Select option 9 (tfd) to destroy all infrastructure
 
 ## Cost Optimization
 - **Auto-scheduling**: Runs 8 AM - 10 PM EST (saves ~58% costs)

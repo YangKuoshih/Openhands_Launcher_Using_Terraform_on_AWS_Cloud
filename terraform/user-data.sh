@@ -52,6 +52,20 @@ services:
       - AWS_REGION=us-east-1
       - PORT=80
     command: --config /app/config.yaml --detailed_debug
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    pull_policy: always
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    ports:
+      - "9000:9000"
+
+volumes:
+  portainer_data:
 EOF
 
 # Create litellm-config.yml
