@@ -1,31 +1,36 @@
 #!/bin/bash
-yum update -y
+dnf update -y
 
 # Install Docker
-yum install -y docker
+dnf install -y docker
 systemctl start docker
 systemctl enable docker
 usermod -a -G docker ec2-user
 
-# Install Docker Compose
-curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+# Install Docker Compose binary (more reliable than pip on AL2023)
+curl -L "https://github.com/docker/compose/releases/download/v2.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 
 # Create OpenHands directory
 mkdir -p /home/ec2-user/openhands
 cd /home/ec2-user/openhands
 
-# Create docker-compose.yml
-cat > docker-compose.yml << 'EOF'
+# Get latest stable OpenHands version
+echo "Detecting latest OpenHands version..."
+LATEST_VERSION=$(docker run --rm gcr.io/go-containerregistry/crane:debug ls docker.all-hands.dev/all-hands-ai/openhands | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1)
+echo "Using OpenHands version: $LATEST_VERSION"
+
+# Create docker-compose.yml with dynamic version
+cat > docker-compose.yml << EOF
 services:
   openhands-app:
-    image: docker.all-hands.dev/all-hands-ai/openhands:latest
+    image: docker.all-hands.dev/all-hands-ai/openhands:${LATEST_VERSION}
     container_name: openhands-app
     pull_policy: always
     stdin_open: true
     tty: true
     environment:
-      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:latest
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:${LATEST_VERSION}
       - LOG_ALL_EVENTS=true
       - LLM_MODEL=litellm_proxy/Claude4
       - LLM_BASE_URL=http://litellm
@@ -114,9 +119,12 @@ EOF
 # Set ownership
 chown -R ec2-user:ec2-user /home/ec2-user/openhands
 
-# Start OpenHands
+# Wait for Docker to be fully ready
+sleep 10
+
+# Start OpenHands with proper user context
 cd /home/ec2-user/openhands
-docker-compose up -d
+sudo -u ec2-user docker-compose up -d
 
 # Create startup script for auto-restart
 cat > /home/ec2-user/start-openhands.sh << 'EOF'

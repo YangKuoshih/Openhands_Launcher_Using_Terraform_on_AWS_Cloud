@@ -73,9 +73,10 @@ echo 7. tfp       - Plan infrastructure changes
 echo 8. tfa       - Update infrastructure
 echo 9. tfd       - Destroy infrastructure
 echo 10. cleanup  - Fix resource conflicts
-echo 11. Exit
+echo 11. check    - Check container status
+echo 12. Exit
 echo.
-set /p choice="Enter your choice (1-11): "
+set /p choice="Enter your choice (1-12): "
 
 if "%choice%"=="1" call "%~dp0terraform\scripts\oh.bat" && goto menu
 if "%choice%"=="2" call "%~dp0terraform\scripts\ec2.bat" && goto menu

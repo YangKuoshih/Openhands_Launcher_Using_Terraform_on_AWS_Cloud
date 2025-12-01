@@ -55,13 +55,13 @@ launcher.bat
 
 ## Docker Image Versions
 
-This deployment uses **latest versions** for newest features:
-- OpenHands: `docker.all-hands.dev/all-hands-ai/openhands:latest`
-- Runtime: `docker.all-hands.dev/all-hands-ai/runtime:latest`
+This deployment **automatically detects and uses the latest stable versions**:
+- OpenHands: Auto-detected latest stable version (currently `0.59.0`)
+- Runtime: Matches OpenHands version for compatibility
 - LiteLLM: `ghcr.io/berriai/litellm:main-latest`
 - Portainer: `portainer/portainer-ce:latest`
 
-**To use pinned versions:** Edit `terraform/user-data.sh` and change version tags to specific versions (e.g., `0.53`)
+**Version Detection:** Each deployment automatically fetches the newest stable OpenHands version from the Docker registry, ensuring compatibility between app and runtime containers.
 
 ## Portainer - Docker Management
 
