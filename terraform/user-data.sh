@@ -20,6 +20,11 @@ echo "Detecting latest OpenHands version..."
 LATEST_VERSION=$(docker run --rm gcr.io/go-containerregistry/crane:debug ls docker.all-hands.dev/all-hands-ai/openhands | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1)
 echo "Using OpenHands version: $LATEST_VERSION"
 
+# Get latest stable runtime version
+echo "Detecting latest runtime version..."
+LATEST_RUNTIME_VERSION=$(docker run --rm gcr.io/go-containerregistry/crane:debug ls docker.all-hands.dev/all-hands-ai/runtime | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1)
+echo "Using runtime version: $LATEST_RUNTIME_VERSION"
+
 # Create docker-compose.yml with dynamic version
 cat > docker-compose.yml << EOF
 services:
@@ -30,7 +35,7 @@ services:
     stdin_open: true
     tty: true
     environment:
-      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:${LATEST_VERSION}
+      - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:${LATEST_RUNTIME_VERSION}
       - LOG_ALL_EVENTS=true
       - LLM_MODEL=litellm_proxy/Claude4.5
       - LLM_BASE_URL=http://litellm
