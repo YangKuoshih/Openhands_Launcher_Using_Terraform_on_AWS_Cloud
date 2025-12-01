@@ -32,10 +32,10 @@ services:
     environment:
       - SANDBOX_RUNTIME_CONTAINER_IMAGE=docker.all-hands.dev/all-hands-ai/runtime:${LATEST_VERSION}
       - LOG_ALL_EVENTS=true
-      - LLM_MODEL=litellm_proxy/Claude4
+      - LLM_MODEL=litellm_proxy/Claude4.5
       - LLM_BASE_URL=http://litellm
       - LLM_API_KEY=openhands-key-2025
-      - OPENHANDS_LLM_MODEL=litellm_proxy/Claude4
+      - OPENHANDS_LLM_MODEL=litellm_proxy/Claude4.5
       - OPENHANDS_LLM_BASE_URL=http://litellm
       - OPENHANDS_LLM_API_KEY=openhands-key-2025
     volumes:
@@ -88,6 +88,9 @@ model_list:
   - model_name: Claude4
     litellm_params:
       model: us.anthropic.claude-sonnet-4-20250514-v1:0
+  - model_name: Claude4.5
+    litellm_params:
+      model: us.anthropic.claude-sonnet-4-5-20250929-v1:0
   - model_name: ClaudeOpus4.1
     litellm_params:
       model: us.anthropic.claude-opus-4-1-20250805-v1:0
