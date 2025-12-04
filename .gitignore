@@ -10,6 +10,8 @@ keys/
 .terraform.lock.hcl
 terraform.tfvars
 terraform.tfvars.json
+tfplan
+*/tfplan
 
 # AWS Credentials
 .aws/

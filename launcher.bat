@@ -74,9 +74,10 @@ echo 8. tfa       - Update infrastructure
 echo 9. tfd       - Destroy infrastructure
 echo 10. cleanup  - Fix resource conflicts
 echo 11. check    - Check container status
-echo 12. Exit
+echo 12. fix      - Fix container errors
+echo 13. Exit
 echo.
-set /p choice="Enter your choice (1-12): "
+set /p choice="Enter your choice (1-13): "
 
 if "%choice%"=="1" call "%~dp0terraform\scripts\oh.bat" && goto menu
 if "%choice%"=="2" call "%~dp0terraform\scripts\ec2.bat" && goto menu
@@ -89,6 +90,8 @@ if "%choice%"=="8" call "%~dp0terraform\scripts\tfa.bat" && goto menu
 if "%choice%"=="9" call "%~dp0terraform\scripts\tfd.bat" && goto menu
 if "%choice%"=="10" call "%~dp0terraform\terraform-state-cleanup.bat" && goto menu
 if "%choice%"=="11" cd /d "%~dp0" && exit /b
+if "%choice%"=="12" call "%~dp0terraform\scripts\fix-containers.bat" && goto menu
+if "%choice%"=="13" exit /b
 
-echo Invalid choice. Please enter 1-11.
+echo Invalid choice. Please enter 1-13.
 goto menu

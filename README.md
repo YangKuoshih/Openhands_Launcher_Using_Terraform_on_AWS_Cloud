@@ -287,12 +287,26 @@ openhands-aws-setup-scheduler-role already exists
 - When Terraform "forgets" about resources it previously created
 
 **How to run cleanup:**
+**How to run cleanup:**
 ```cmd
 launcher.bat
 ```
 Select option 10 (cleanup), then option 8 (tfa) to apply changes.
 
 ## Troubleshooting
+
+**Runtime Container Error (micromamba)?**
+If you see errors about `/openhands/micromamba/bin/micromamba` not found:
+```bash
+# SSH to your EC2 instance
+ssh -i terraform/keys/openhands-key.pem ec2-user@<ELASTIC_IP>
+
+# Run the quick fix script
+cd /home/ec2-user/openhands
+curl -o quick-fix.sh https://raw.githubusercontent.com/YangKuoshih/Openhands_Launcher_Using_Terraform_on_AWS_Cloud/main/terraform/scripts/quick-fix-runtime.sh
+chmod +x quick-fix.sh
+./quick-fix.sh
+```
 
 **Model Not Working?** Some Bedrock models need `us.` prefix:
 - Check AWS Bedrock Console → Model Access
