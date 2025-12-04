@@ -51,17 +51,17 @@ launcher.bat
 8. **tfa** - Update infrastructure and OpenHands containers
 9. **tfd** - Destroy infrastructure
 10. **cleanup** - Fix resource conflicts
-11. **Exit** - Close launcher
+11. **check** - Check container status
+12. **fix** - Fix container errors
+13. **Exit** - Close launcher
 
 ## Docker Image Versions
 
-This deployment **automatically detects and uses the latest stable versions**:
-- OpenHands: Auto-detected latest stable version (currently `0.59.0`)
-- Runtime: Matches OpenHands version for compatibility
-- LiteLLM: `ghcr.io/berriai/litellm:main-latest`
-- Portainer: `portainer/portainer-ce:latest`
-
-**Version Detection:** Each deployment automatically fetches the newest stable OpenHands version from the Docker registry, ensuring compatibility between app and runtime containers.
+This deployment uses **pinned versions** for stability:
+- **OpenHands**: `0.61.0` (pinned for stability)
+- **Runtime**: `ghcr.io/openhands/runtime:oh_v0.61.0_image_nikolaik_s_python-nodejs_tag_python3.12-nodejs22`
+- **LiteLLM**: `ghcr.io/berriai/litellm:main-latest`
+- **Portainer**: `portainer/portainer-ce:latest`
 
 ## Portainer - Docker Management
 
@@ -79,18 +79,24 @@ When you first open OpenHands, configure the AI model:
 1. Click "see advanced settings" (small text on popup) or gear icon at bottom left
 2. Go to LLM tab and enable "Advanced" toggle
 3. Enter these settings:
-   - **Custom Model**: `litellm_proxy/Claude4`
+   - **Custom Model**: `litellm_proxy/Claude4` (or any model below)
    - **Base URL**: `http://litellm`
    - **API Key**: `openhands-key-2025`
 4. Click "Save Changes"
 5. Complete privacy preferences popup
 
 **Available Models:**
-- `Claude3` - Claude 3 Haiku (fastest, most cost-effective)
-- `Claude3.7` - Claude 3.7 Sonnet (balanced performance)
-- `Claude4` - Claude 4 Sonnet (recommended - best balance)
-- `ClaudeOpus4.1` - Claude Opus 4.1 (most capable, slower)
-- `NovaPro1` - Amazon Nova Pro (AWS native)
+
+| Model Name | Description | Best For |
+|------------|-------------|----------|
+| `Claude3` | Claude 3 Haiku | Fast responses, cost-effective |
+| `Claude3.7` | Claude 3.7 Sonnet | Balanced performance |
+| `Claude4` | Claude 4 Sonnet | **Recommended** - best balance |
+| `Claude4.5` | Claude 4.5 Sonnet | Latest Sonnet model |
+| `ClaudeOpus4.1` | Claude Opus 4.1 | Most capable, slower |
+| `NovaPro1` | Amazon Nova Pro | AWS native model |
+
+> **Note**: All Claude models are pre-configured to work with AWS Bedrock. The LiteLLM proxy handles parameter compatibility automatically.
 
 ## Getting Started with OpenHands
 
@@ -287,7 +293,6 @@ openhands-aws-setup-scheduler-role already exists
 - When Terraform "forgets" about resources it previously created
 
 **How to run cleanup:**
-**How to run cleanup:**
 ```cmd
 launcher.bat
 ```
@@ -313,9 +318,25 @@ chmod +x quick-fix.sh
 - If you see "Cross-region inference" → use `us.` prefix in model config
 - If no "Cross-region inference" → no prefix needed
 
+**Claude 4.5/Newer Models Error?**
+If you see `temperature and top_p cannot both be specified`:
+- This is automatically handled by the LiteLLM configuration
+- The config uses `additional_drop_params` to remove conflicting parameters
+- Try restarting the LiteLLM container: `docker-compose restart litellm`
+
 **Resource Conflicts?** See [TROUBLESHOOTING.md](TROUBLESHOOTING.md) for detailed solutions.
 
+## Redeployment
+
+To redeploy with updated configuration:
+```cmd
+redeploy.bat
+```
+This will destroy and recreate the infrastructure with the latest settings.
+
 ## Cleanup
+
+To destroy all infrastructure:
 ```cmd
 launcher.bat
 ```
@@ -324,6 +345,16 @@ Select option 9 (tfd) to destroy all infrastructure
 ## Cost Optimization
 - **Auto-scheduling**: Runs 8 AM - 10 PM EST (saves ~58% costs)
 - **Estimated cost**: ~$17/month with scheduling vs $36/month 24/7
+
+## Recent Changes
+
+### v0.61.0 Update (December 2024)
+- Updated OpenHands to version 0.61.0
+- Fixed Claude 4.5/4/3.7/Opus model compatibility with Bedrock
+- Added `additional_drop_params` to prevent `temperature`/`top_p` conflicts
+- Added troubleshooting scripts for runtime issues
+- Added `redeploy.bat` for easy redeployment
+- Enhanced launcher with container management options
 
 ## License
 MIT License - feel free to use and modify for your needs.
