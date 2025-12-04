@@ -93,7 +93,8 @@ volumes:
   portainer_data:
 EOF
 
-# Create litellm-config.yml with drop_params fix for newer Claude models
+# Create litellm-config.yml with additional_drop_params fix for newer Claude models
+# These models don't allow both temperature and top_p simultaneously
 cat > litellm-config.yml <<'EOF'
 model_list:
   - model_name: Claude3
@@ -106,18 +107,26 @@ model_list:
     litellm_params:
       model: us.anthropic.claude-3-7-sonnet-20250219-v1:0
       drop_params: true
+      additional_drop_params:
+        - top_p
   - model_name: Claude4
     litellm_params:
       model: us.anthropic.claude-sonnet-4-20250514-v1:0
       drop_params: true
+      additional_drop_params:
+        - top_p
   - model_name: Claude4.5
     litellm_params:
       model: us.anthropic.claude-sonnet-4-5-20250929-v1:0
       drop_params: true
+      additional_drop_params:
+        - top_p
   - model_name: ClaudeOpus4.1
     litellm_params:
       model: us.anthropic.claude-opus-4-1-20250805-v1:0
       drop_params: true
+      additional_drop_params:
+        - top_p
 
 litellm_settings:
   modify_params: True
